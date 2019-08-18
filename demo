@@ -1,0 +1,235 @@
+if($_FILES['file']['name'])
+	{
+		$fn= explode('.',$_FILES['file']['name']);
+		if($fn[1]=='csv')
+		{
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+			{
+				$item1 = mysqli_real_escape_string($db,$data[0]);
+				$item2 = mysqli_real_escape_string($db,$data[1]);
+				$sql="INSERT INTO tbl_excel VALUES('$item1','$item2')";
+				mysqli_query($db,$sql) or die (mysqli_error($db));
+			}
+			fclose($handle);
+			print "Import done!!";
+		}
+	}
+
+
+
+
+
+if (isset($_POST["submit"]))
+{       
+  if($_FILES['file']['name'])
+	{
+		$fn= explode('.',$_FILES['file']['name']);
+		if($fn[1]=='csv')
+		{
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+			{
+				$item1 = mysqli_real_escape_string($db,$data[0]);
+				$item2 = mysqli_real_escape_string($db,$data[1]);
+				$item3 = mysqli_real_escape_string($db,$data[2]);
+				$item4 = mysqli_real_escape_string($db,$data[3]);
+				echo '<table>'.
+				'<tr>'.
+							'<td>'.$data[0].'</td>'.
+							'<td>'.$data[1].'</td>'.
+							'<td>'.$data[2].'</td>'.
+							'<td>'.$data[3].'</td>'.
+				'<tr>'.				
+							'</table>';
+				
+				$sql="INSERT INTO tbl_excel(firstname,lastname,eid,number) VALUES('$item1','$item2','$item3','$item4')";
+				mysqli_query($db,$sql) or die (mysqli_error($db));
+				
+			}
+			fclose($handle);
+			print "Import done!!";
+		}
+		else if($fn[2]=='xls')
+		{
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+			{
+				$item1 = mysqli_real_escape_string($db,$data[0]);
+				$item2 = mysqli_real_escape_string($db,$data[1]);
+				$item3 = mysqli_real_escape_string($db,$data[2]);
+				$item4 = mysqli_real_escape_string($db,$data[3]);
+				$sql="INSERT INTO tbl_excel VALUES('$item1','$item2','$item3','$item4')";
+				mysqli_query($db,$sql) or die (mysqli_error($db));
+			}
+			fclose($handle);
+			print "Import done!!";
+		}
+		else if($fn[3]=='xlsx')
+		{
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+			{
+				$item1 = mysqli_real_escape_string($db,$data[0]);
+				$item2 = mysqli_real_escape_string($db,$data[1]);
+				$item3 = mysqli_real_escape_string($db,$data[2]);
+				$item4 = mysqli_real_escape_string($db,$data[3]);				
+				$sql="INSERT INTO tbl_excel VALUES('$item1','$item2','$item3','$item4')";
+				mysqli_query($db,$sql) or die (mysqli_error($db));
+			}
+			fclose($handle);
+			print "Import done!!";
+		}
+		else
+		{
+			echo "You are trying to import wrong file. Please note that we accept
+			csv,xls and xlsx formate files only..!!";
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+/*
+$db=mysqli_connect('68.178.217.40','pwocsurmonques','Rapt#19win515','pwocsurmonques');
+$sql = "SELECT * FROM tbl_excel";
+$result = mysqli_query($db,$sql) or die (mysqli_error($db));
+echo '<table border="1" cellspacing="1" cellpadding="3" align="center">
+						<tr>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Email ID</th>
+							<th>Phone Number</th>											
+						</tr>';
+$fn= explode('.',$_FILES['csv_file']['name']);	
+$handle = fopen	($_FILES['csv_file']['tmp_name'],"r") die (error_get_last());
+if(isset($_FILES['csv_file']['name']))
+		{	
+		if($fn[1]=='csv')
+		{			
+			$handle = fopen($_FILES['csv_file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+				{
+							echo '<tr>';
+							echo '<td>'.$data[0].'</td>';
+							echo '<td>'.$data[1].'</td>';
+							echo '<td>'.$data[2].'</td>';
+							echo '<td>'.$data[3].'</td>';							
+							echo '</tr>';												
+				}
+				if(isset($_POST["cf"]))
+				{				
+				while($data = fgetcsv($handle))
+				{
+				$item1 = mysqli_real_escape_string($db,$data[0]);
+				$item2 = mysqli_real_escape_string($db,$data[1]);
+				$item3 = mysqli_real_escape_string($db,$data[2]);
+				$item4 = mysqli_real_escape_string($db,$data[3]);
+				$sql="INSERT INTO tbl_excel(firstname,lastname,eid,number) VALUES('$item1','$item2','$item3','$item4')";
+				mysqli_query($db,$sql) or die (mysqli_error($db));
+				}
+				}			
+			fclose($handle);
+		}
+		else if($fn[2]=='xls')
+		{	
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+				{
+							echo '<tr>';
+							echo '<td>'.$data[0].'</td>';
+							echo '<td>'.$data[1].'</td>';
+							echo '<td>'.$data[2].'</td>';
+							echo '<td>'.$data[3].'</td>';
+							echo '</tr>';												
+				}				
+			fclose($handle);			
+		}
+		else if($fn[3]=='xlsx')
+		{
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+				while($data = fgetcsv($handle))
+				{
+							echo '<tr>';
+							echo '<td>'.$data[0].'</td>';
+							echo '<td>'.$data[1].'</td>';
+							echo '<td>'.$data[2].'</td>';
+							echo '<td>'.$data[3].'</td>';
+							echo '</tr>';												
+				}								
+			fclose($handle);
+		}
+		else
+		{
+			exit;
+		}		
+	}
+else
+{
+exit;
+} 
+if(isset($_POST["cf"]))
+{
+if(!empty($_FILES['file']['name']))
+		{
+			$handle = fopen($_FILES['file']['tmp_name'],"r");
+			while($data = fgetcsv($handle))
+			{
+				$item1 = mysqli_real_escape_string($db,$data[0]);
+				$item2 = mysqli_real_escape_string($db,$data[1]);
+				$item3 = mysqli_real_escape_string($db,$data[2]);
+				$item4 = mysqli_real_escape_string($db,$data[3]);
+				$sql="INSERT INTO tbl_excel(firstname,lastname,eid,number) VALUES('$item1','$item2','$item3','$item4')";
+				mysqli_query($db,$sql) or die (mysqli_error($db));
+			}
+			fclose($handle);
+			print "Import done!!";		
+		}
+}*/
+?>
+
+
+
+
+/*var _validFileExtensions = [".xls", ".csv","xlsx"];    
+	function Validate(oForm) {
+    var arrInputs = oForm.getElementsByTagName("input");
+    for (var i = 0; i < arrInputs.length; i++) {
+        var oInput = arrInputs[i];
+        if (oInput.type == "file") {
+            var sFileName = oInput.value;
+            if (sFileName.length > 0) {
+                var blnValid = false;
+                for (var j = 0; j < _validFileExtensions.length; j++) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+                
+                if (!blnValid) {
+                    alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+                    return false;
+                }
+            }
+        }
+    }
+  
+    return true;
+}*/
