@@ -27,6 +27,8 @@ if(isset($_POST['sub']))
   <br>
   <p>Password is <?php echo $pd; ?>came through Session varible from set.php</p>
   <br>
+  
+  <a href="set_about_us.php">About Us</a>
   <input type="submit" name="sub" value="home">
   </div> 
   </form>  

@@ -1,28 +1,43 @@
 <?php 
-session_start();
+session_start(); 
+//It will get the file which was uploaded on the server directory
+$op=$_SESSION['f'];
 $db=mysqli_connect('68.178.217.40','pwocsurmonques','Rapt#19win515','pwocsurmonques');
-/*echo $handle;
-//$handle= $_FILES['file']['tmp_name'];
-if(isset($_POST['cf']))
-{
-	
-	if(is_uploaded_file($handle))
-		{
-			echo "hello...";
-			$file = fopen($handle);				
-			fgetcsv($file);
-			while(($data = fgetcsv($file))!==FALSE)
-			{	
-				$item1 = mysqli_real_escape_string($db,$data[0]);
-				$item2 = mysqli_real_escape_string($db,$data[1]);
-				$item3 = mysqli_real_escape_string($db,$data[2]);
-				$item4 = mysqli_real_escape_string($db,$data[3]);				
-				$sql="INSERT INTO tbl_excel(firstname,lastname,eid,number) VALUES('$item1','$item2','$item3','$item4')";
-				mysqli_query($db,$sql) or die (mysqli_error($db));				
-			}fclose($file);	
-			echo "Imported..";		
-		}
-}*/
+if(isset($_POST['btn']))
+{	
+	$counter=$_SESSION['a']; 
+	$fg=$_SESSION['b']; 		
+	//if the counter value is imcremented then it will throw error
+	if(!empty($counter))
+	{
+	echo "<br>"."<h4 align='center' style='color:#FF0000'><p>You must have First Column to be Number of the uploaded file:</p></h4>";	
+	unlink($op);	
+	}
+	//else if again the flag value is imcremented then it will throw error
+	else if(!empty($fg))
+	{
+	echo "<br>"."<h4 align='center' style='color:#FF0000'><p>You must have no more than 4 Columns of the uploaded file:</p></h4>";
+	unlink($op);	
+	}
+	//if counter or flag value is 0 then insert into the database
+	else
+	{	
+	$file = fopen($op,'r');		
+	while(($da = fgetcsv($file))!==FALSE)
+	{					
+				$item1 = mysqli_real_escape_string($db,$da[0]);
+				$item2 = mysqli_real_escape_string($db,$da[1]);
+				$item3 = mysqli_real_escape_string($db,$da[2]);
+				$item4 = mysqli_real_escape_string($db,$da[3]);				
+				$sql="INSERT INTO tbl_excel(firstname,lastname,email,number) VALUES('$item1','$item2','$item3','$item4')";
+				mysqli_query($db,$sql);				
+	}			
+	fclose($file);
+	echo "<h2 align='center' style='color:#228B22'><p>Stored...!</p></h2>";	
+	// delete file
+	unlink($op); 
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,17 +46,19 @@ if(isset($_POST['cf']))
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dob_table.css">
+  <link rel="stylesheet" type="text/css" href="http://ws1.postescanada-canadapost.ca/css/addresscomplete-2.30.min.css?key=be89-uc93-dm18-mu59" />
+  <script type="text/javascript" src="http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=be89-uc93-dm18-mu59"></script>
   <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>  
   <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript">
   $(document).ready(function(){
   $("#open").click(function(){
-    $("div").toggle();
-  });
-  });
-</script>
+    $("div").show();
+	});
+	});
+  </script>
   <style>
   table,tr,td
             {
@@ -54,7 +71,8 @@ if(isset($_POST['cf']))
   </style>		
 </head>
 <body>
-<form id="upload_csv" name="myform" method="POST" enctype='multipart/form-data'  action="<?php echo $_SERVER["PHP_SELF"]; ?>" onSubmit="getPath();">
+<div align="center"><h4><p>Please note that only CSV and XLSX formate is allowed..!</p></h4></div>
+<form id="upload_csv" name="myform" method="POST" enctype='multipart/form-data'>
 	<div align="center" style="padding:10px;">
 	<input type="file" name="file" id="file" class="ip">
 	<br>
@@ -73,69 +91,150 @@ if(isset($_POST['cf']))
 			<th>C6</th>			
 			<th>C7</th>			
 		</tr>		
-			<?php 	
-			$cnt = 0;			
-			if($_FILES['file']['name'])
+			<?php 
+			$cnt = 0;
+			$flag=0;
+			$tmp=0;	
+			$path="../fupload/";
+			$open=$_FILES['file']['name'];
+			move_uploaded_file($_FILES['file']['tmp_name'],$path.$open);
+			$store = $path.$open;
+			$_SESSION['f']=$store;
+			if($open)
 			{				
-			$fn= explode('.',$_FILES['file']['name']);				
+			$fn= explode('.',$open);			
 			if($fn[1]=='csv')
 			{	
-				$handle = fopen($_FILES['file']['tmp_name'],"r");				
-				$_SESSION['file']=$_FILES['file']['name'];				 				
-				$fl=$_FILES['file']['name'];				 				
+				$handle = fopen($open,"r");					
+				//$fl=$_FILES['file']['name'];				 				
 				//$first_column_read=array_map(str_getcsv,file($_FILES['file']['name'],"r"));				 				
 				//$header = array_shift($first_column_read);
 				while($data = fgetcsv($handle))
-				{						
+				{
+				$tmp++;					
 				?>
-					<tr>
+				<tr>
 						<?php 							
-							if($data>=$data[3])
-							{								
 							if(filter_var($data[0],FILTER_VALIDATE_INT) === false ) 
 							{
-								echo "<h3><font color='#ff6666'>1st column is not ID</font></h3>";
+							$cnt++;
 							?>
 							<td class="emsg"><?php echo $data[0]; ?></td>
 							<td><?php echo $data[1]; ?></td>
 							<td><?php echo $data[2]; ?></td>
-							<td><?php echo $data[3]; ?></td>
-							<td><?php echo $data[4]; ?></td>
-							<td><?php echo $data[5]; ?></td>
-							<td><?php echo $data[6]; ?></td>																														
-							<?php 								
-							}							
+							<td><?php echo $data[3]; ?></td>								
+							<?php 																		
+							}
 							else
-							{							
+							{
+							?>
+							<td><?php echo $data[0]; ?></td>
+							<td><?php echo $data[1]; ?></td>
+							<td><?php echo $data[2]; ?></td>
+							<td><?php echo $data[3]; ?></td>							
+							<?php
+							}
+							if($data>=$data[3])
+							{
+							$flag++;
+							?>
+							<td class="emsg"><?php echo $data[4]; ?></td>
+							<td class="emsg"><?php echo $data[5]; ?></td>
+							<td class="emsg"><?php echo $data[6]; ?></td>
+							<?php
+							}
+							else
+							{
+								break;
+							}	
+				}
+			$_SESSION['a']=$cnt;
+			$_SESSION['b']=$flag;			
+			}
+				
+			else if($fn[1]=='xlsx')
+			{	
+				$handle = fopen($open,"r");									
+				while($data = fgetcsv($handle))
+				{
+				$tmp++;					
+				?>
+				<tr>
+						<?php 							
+							if(filter_var($data[0],FILTER_VALIDATE_INT) === false ) 
+							{
+							$cnt++;
 							?>
 							<td class="emsg"><?php echo $data[0]; ?></td>
-							<td class="emsg"><?php echo $data[1]; ?></td>
-							<td class="emsg"><?php echo $data[2]; ?></td>
-							<td class="emsg"><?php echo $data[3]; ?></td>
-							<?php														
-							}									
-							}?>
-							<td><?php echo $data[4]; ?></td>
-							<td><?php echo $data[5]; ?></td>
-							<td><?php echo $data[6]; ?></td>								
-				<?php
+							<td><?php echo $data[1]; ?></td>
+							<td><?php echo $data[2]; ?></td>
+							<td><?php echo $data[3]; ?></td>								
+							<?php 												
+							}
+							else
+							{
+							?>
+							<td><?php echo $data[0]; ?></td>
+							<td><?php echo $data[1]; ?></td>
+							<td><?php echo $data[2]; ?></td>
+							<td><?php echo $data[3]; ?></td>							
+							<?php
+							}
+							if($data>=$data[3])
+							{
+							$flag++;
+							?>
+							<td class="emsg"><?php echo $data[4]; ?></td>
+							<td class="emsg"><?php echo $data[5]; ?></td>
+							<td class="emsg"><?php echo $data[6]; ?></td>
+							<?php
+							}
+							else
+							{
+							break;
+							}	
 				}
-				echo "<h4><font color='Tomato'>4 Columns are only allowed</font></h4>";
+			$_SESSION['a']=$cnt;
+			$_SESSION['b']=$flag;			
+			}			
+			else
+			{
+				echo "<h4 align='center' style='color:#FF0000'>Please check the formate..!</h4>";
+				unlink($open);
 				exit;
+			}			
 			}
+			else
+			{
+				echo "<h4 align='center' style='color:#FF0000'>Please Upload the File..</h4>";				
+			}			
+			
+			if(!empty($cnt))
+			{
+			echo "<h4 align='center' style='color:#FF0000'><p>Error-1:First Column must be always Number..</p></h4>";						
+			}			
+			
+			if(!empty($flag))
+			{
+			echo "<h4 align='center' style='color:#FF0000'><p>Error-2:First 4 Columns are only allowed..</p></h4>";			
 			}			
 			?>										
-			</tr>			
-			<div id="records"><p><?php echo "Total Records found on the sheet is ".$cnt; ?> </p></div>
+			</tr>						
+			<div id="records">
+			<h4>
+			<p style="color:#228B22;"><?php echo "Total Records found on the sheet is ".$tmp; ?>
+			</p>
+			</h4>
+			</div>			
 			</thead>
 			</table>			
 			</div>
-			<br>	
+			<br>				
 </form>
-<div align="center"> 
-<form method="post" action="csv.php">	
-    <input type="submit" value="Save">
-	</div>
+<div align="center" id="save" name="save"> 
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">	
+<input type="submit" name="btn" value="Save" >
+</div>
 </form>
 <br>
 </body>
