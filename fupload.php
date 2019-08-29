@@ -42,76 +42,171 @@ if(isset($_POST['btn']))
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/dob_table.css">
-  <link rel="stylesheet" type="text/css" href="http://ws1.postescanada-canadapost.ca/css/addresscomplete-2.30.min.css?key=be89-uc93-dm18-mu59" />
-  <script type="text/javascript" src="http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=be89-uc93-dm18-mu59"></script>
-  <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>  
-  <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+  <link rel="stylesheet" href="css/dob_table.css">  
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function(){
-  $("#open").click(function(){
-    $("div").show();
-	});
-	});
+  <script src="ddtf.js"></script> 
+  <script type="text/javascript"> 
+	function myFunction() {
+	var input, filter, table, tr, td, i;
+	input = document.getElementById("mylist");
+	filter = input.value.toUpperCase();
+	table = document.getElementById("myTable");
+	tr = table.getElementsByTagName("tr");
+	for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}  
   </script>
   <style>
-  table,tr,td
-            {
+				#data-table + #tb   {
                 border: 1px solid black;
+				padding: 15px;
+				width:100%;
             }
+			table,tr,td{
+				border: 1px solid black;
+				padding: 15px;
+			}
 			td.emsg
 			{
 				color:#ff6666;
-			}			
+			}
+			th{text-align: center;padding:10px;}
+.button {
+  background-color: #E63F0D;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+select
+{
+	padding:10px;
+	
+}			
   </style>		
 </head>
 <body>
 <div align="center"><h4><p>Please note that only CSV and XLSX formate is allowed..!</p></h4></div>
 <form id="upload_csv" name="myform" method="POST" enctype='multipart/form-data'>
-	<div align="center" style="padding:10px;">
-	<input type="file" name="file" id="file" class="ip">
-	<br>
-	<input type="submit" id="open">		
+	
+	<div align="center" style="padding:10px;">		
+	<table cellspacing="1" cellpadding="3" >
+	<tr><th><input type="file" name="file" id="file" size="60"></th></tr>	
+	<tr align="center"><td><input type="submit" id="open" class="button"></td></tr>		
+	</table>	
 	</div>	
-	<br>	
+	
+	<br>
+	<br>
+	
 	<div align="center">
+	<table cellspacing="1" cellpadding="3">
+	<tr>	
+	<td>	
+	<select name="cl1" onchange="myFunction()">
+		<option value="id">Number</option>
+		<option value="FirstName">First Name</option>
+		<option value="LastName" selected>LastName</option>
+		<option value="emailid">EmailId</option>
+		<option value="phonenumber">Contact</option>
+	</select>	
+	</td>
+	
+	<td>	
+	<select name="cl2">
+		<option value="id">Number</option>
+		<option value="FirstName">First Name</option>
+		<option value="LastName" selected>LastName</option>
+		<option value="emailid">EmailId</option>
+		<option value="phonenumber">Contact</option>
+	</select>	
+	</td>
+	
+	<td>	
+	<select name="cl3">
+		<option value="id">Number</option>
+		<option value="FirstName">First Name</option>
+		<option value="LastName" selected>LastName</option>
+		<option value="emailid">EmailId</option>
+		<option value="phonenumber">Contact</option>
+	</select>	
+	</td>
+	
+	<td>	
+	<select name="cl4">
+		<option value="id">Number</option>
+		<option value="FirstName">First Name</option>
+		<option value="LastName" selected>LastName</option>
+		<option value="emailid">EmailId</option>
+		<option value="phonenumber">Contact</option>
+	</select>	
+	</td>
+		
+	
+	</tr>
+	</table>
+	</div>
+	<div align="center" style="overflow-x:auto;">
 	<table border="1" cellspacing="1" cellpadding="3" id="data-table" align="center">
+	<tbody id="tb">
 	<thead>
+	
 		<tr>
 			<th>First Name</th>
 			<th>Last Name</th>
 			<th>Email ID</th>
-			<th>Phone Number</th>			
-			<th>C5</th>			
-			<th>C6</th>			
-			<th>C7</th>			
-		</tr>		
+			<th>Phone Number</th>							
+		</tr>
+</thead>		
 			<?php 
+			define('MB', 1048576);
 			$cnt = 0;
 			$flag=0;
 			$tmp=0;	
 			$path="../fupload/";
 			$open=$_FILES['file']['name'];
+			$size=$_FILES['file']['size'];
 			move_uploaded_file($_FILES['file']['tmp_name'],$path.$open);
 			$store = $path.$open;
 			$_SESSION['f']=$store;
-			if($open)
-			{				
-			$fn= explode('.',$open);			
-			if($fn[1]=='csv')
+			if($size >= 5*MB)
+			{							
+				echo "<h4 align='center' style='color:#FF0000'>File too large. File must be less than 5 megabytes.</h4> ";
+			}
+			else
 			{	
+				if($open)
+				{
+				$fn= explode('.',$open);
+				if($fn[1]=='csv')
+				{	
 				$handle = fopen($open,"r");					
 				//$fl=$_FILES['file']['name'];				 				
 				//$first_column_read=array_map(str_getcsv,file($_FILES['file']['name'],"r"));				 				
 				//$header = array_shift($first_column_read);
+				$found = false;
 				while($data = fgetcsv($handle))
 				{
-				$tmp++;					
+				$tmp++;
+				$is_empty = false;
+								
 				?>
 				<tr>
 						<?php 							
@@ -119,95 +214,57 @@ if(isset($_POST['btn']))
 							{
 							$cnt++;
 							?>
-							<td class="emsg"><?php echo $data[0]; ?></td>
-							<td><?php echo $data[1]; ?></td>
-							<td><?php echo $data[2]; ?></td>
-							<td><?php echo $data[3]; ?></td>								
-							<?php 																		
-							}
+							<td class="emsg"><?php echo $data[0]; ?></td>													
+							<?php							
+							}						
 							else
-							{
+							{								
 							?>
-							<td><?php echo $data[0]; ?></td>
+							<td><?php echo $data[0];?></td>														
+							<?php								
+							}?>							
 							<td><?php echo $data[1]; ?></td>
 							<td><?php echo $data[2]; ?></td>
-							<td><?php echo $data[3]; ?></td>							
-							<?php
-							}
-							if($data>=$data[3])
+							<td><?php echo $data[3]; ?></td>
+							<?php	
+							if($data>=$data[4])
 							{
-							$flag++;
-							?>
-							<td class="emsg"><?php echo $data[4]; ?></td>
-							<td class="emsg"><?php echo $data[5]; ?></td>
-							<td class="emsg"><?php echo $data[6]; ?></td>
-							<?php
+								if(empty($data[4]))
+								{
+									continue;
+									$data++;	
+								}
+								else
+								{
+								$flag++;
+								?>
+								<td class="emsg"><?php echo $data[4];?></td>
+								<td class="emsg"><?php echo $data[5];?></td>
+								<td class="emsg"><?php echo $data[6];?></td>
+								<?php										
+								}							
 							}
 							else
 							{
 								break;
-							}	
-				}
+							}							
+				}				
 			$_SESSION['a']=$cnt;
 			$_SESSION['b']=$flag;			
 			}
-				
-			else if($fn[1]=='xlsx')
-			{	
-				$handle = fopen($open,"r");									
-				while($data = fgetcsv($handle))
-				{
-				$tmp++;					
-				?>
-				<tr>
-						<?php 							
-							if(filter_var($data[0],FILTER_VALIDATE_INT) === false ) 
-							{
-							$cnt++;
-							?>
-							<td class="emsg"><?php echo $data[0]; ?></td>
-							<td><?php echo $data[1]; ?></td>
-							<td><?php echo $data[2]; ?></td>
-							<td><?php echo $data[3]; ?></td>								
-							<?php 												
-							}
-							else
-							{
-							?>
-							<td><?php echo $data[0]; ?></td>
-							<td><?php echo $data[1]; ?></td>
-							<td><?php echo $data[2]; ?></td>
-							<td><?php echo $data[3]; ?></td>							
-							<?php
-							}
-							if($data>=$data[3])
-							{
-							$flag++;
-							?>
-							<td class="emsg"><?php echo $data[4]; ?></td>
-							<td class="emsg"><?php echo $data[5]; ?></td>
-							<td class="emsg"><?php echo $data[6]; ?></td>
-							<?php
-							}
-							else
-							{
-							break;
-							}	
-				}
-			$_SESSION['a']=$cnt;
-			$_SESSION['b']=$flag;			
-			}			
 			else
 			{
 				echo "<h4 align='center' style='color:#FF0000'>Please check the formate..!</h4>";
 				unlink($open);
 				exit;
-			}			
-			}
+			}	
+			}					
 			else
 			{
 				echo "<h4 align='center' style='color:#FF0000'>Please Upload the File..</h4>";				
-			}			
+			}
+			}
+			
 			
 			if(!empty($cnt))
 			{
@@ -226,14 +283,14 @@ if(isset($_POST['btn']))
 			</p>
 			</h4>
 			</div>			
-			</thead>
+			</tbody>
 			</table>			
 			</div>
 			<br>				
 </form>
 <div align="center" id="save" name="save"> 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">	
-<input type="submit" name="btn" value="Save" >
+<input type="submit" name="btn" value="Save" class="button" >
 </div>
 </form>
 <br>

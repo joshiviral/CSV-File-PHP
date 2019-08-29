@@ -6798,3 +6798,23 @@
 [23-Aug-2019 16:25:40 America/Toronto] PHP Warning:  fgetcsv() expects parameter 1 to be resource, boolean given in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 26
 [23-Aug-2019 16:25:40 America/Toronto] PHP Warning:  fgetcsv() expects parameter 1 to be resource, boolean given in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 26
 [23-Aug-2019 16:25:40 America/Toronto] PHP Warning:  fgetcsv() expects parameter 1 to be resource, boolean given in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 26
+[26-Aug-2019 16:15:45 America/Toronto] PHP Fatal error:  Cannot break/continue 1 level in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 167
+[26-Aug-2019 16:25:19 America/Toronto] PHP Fatal error:  Cannot break/continue 1 level in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 167
+[26-Aug-2019 16:27:56 America/Toronto] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 170
+[26-Aug-2019 16:59:17 America/Toronto] PHP Fatal error:  Cannot break/continue 1 level in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 166
+[26-Aug-2019 18:41:29 America/Toronto] PHP Fatal error:  Cannot break/continue 1 level in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 162
+[28-Aug-2019 14:04:01 America/Toronto] PHP Parse error:  syntax error, unexpected ')', expecting '(' in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 199
+[28-Aug-2019 14:04:36 America/Toronto] PHP Parse error:  syntax error, unexpected '{' in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 200
+[28-Aug-2019 14:05:20 America/Toronto] PHP Parse error:  syntax error, unexpected '{' in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 200
+[28-Aug-2019 15:09:12 America/Toronto] PHP Fatal error:  Cannot use [] for reading in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 198
+[28-Aug-2019 16:18:31 America/Toronto] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 234
+[28-Aug-2019 16:19:54 America/Toronto] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 242
+[28-Aug-2019 18:17:48 America/Toronto] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 239
+[28-Aug-2019 18:20:01 America/Toronto] PHP Parse error:  syntax error, unexpected '}' in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 243
+[28-Aug-2019 18:21:19 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 234
+[28-Aug-2019 18:24:08 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 235
+[28-Aug-2019 18:24:13 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 235
+[28-Aug-2019 18:24:23 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 235
+[28-Aug-2019 18:24:28 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 235
+[28-Aug-2019 18:24:35 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 235
+[28-Aug-2019 18:33:50 America/Toronto] PHP Warning:  unlink(): No such file or directory in /home/emailcanada/public_html/pwoctest/fupload/fupload.php on line 235
